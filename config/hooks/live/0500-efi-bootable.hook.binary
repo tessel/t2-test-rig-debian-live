@@ -1,0 +1,39 @@
+#!/bin/sh
+
+set -e
+
+[ -e "${LIVE_BUILD}/scripts/build.sh" ] && . "${LIVE_BUILD}/scripts/build.sh" || . /usr/lib/live/build.sh
+
+Read_conffiles config/all config/common config/bootstrap config/chroot config/binary config/source
+Set_defaults
+
+Echo "Setting up EFI boot from $(pwd)"
+
+Check_package chroot /usr/lib/SYSLINUX.EFI/efi32/syslinux.efi syslinux-efi
+Check_package chroot /usr/lib/syslinux/modules/efi32/ldlinux.e32 syslinux-common
+Check_package chroot /usr/lib/SYSLINUX.EFI/efi64/syslinux.efi syslinux-efi
+
+Install_package
+
+mkdir -p binary/EFI/BOOT
+cp chroot/usr/lib/SYSLINUX.EFI/efi32/syslinux.efi binary/EFI/BOOT/bootia32.efi
+cp chroot/usr/lib/syslinux/modules/efi32/ldlinux.e32 binary/EFI/BOOT/
+cp chroot/usr/lib/syslinux/modules/efi32/libcom32.c32 binary/EFI/BOOT/
+cp chroot/usr/lib/syslinux/modules/efi32/hdt.c32 binary/EFI/BOOT/
+cp chroot/usr/lib/syslinux/modules/efi32/libutil.c32 binary/EFI/BOOT/
+cp chroot/usr/lib/syslinux/modules/efi32/vesamenu.c32 binary/EFI/BOOT/
+cp chroot/usr/lib/SYSLINUX.EFI/efi64/syslinux.efi binary/EFI/BOOT/bootx64.efi
+cp chroot/usr/lib/syslinux/modules/efi64/ldlinux.e64 binary/EFI/BOOT/
+cp binary/syslinux/*.cfg binary/EFI/BOOT/
+cp binary/syslinux/*.png binary/EFI/BOOT/
+
+case "${LB_BUILD_WITH_CHROOT}" in
+        true)
+                # Saving cache
+                Save_cache cache/packages.binary
+
+                # Removing depends
+                Remove_package
+                ;;
+esac
+
