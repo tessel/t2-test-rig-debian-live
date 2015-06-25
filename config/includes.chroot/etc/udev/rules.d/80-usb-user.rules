@@ -1,0 +1,2 @@
+SUBSYSTEM=="usb", MODE="0660", GROUP="plugdev", ENV{ID_MM_DEVICE_IGNORE}="1"
+KERNEL=="hidraw*", SUBSYSTEM=="hidraw", MODE="0660", GROUP="plugdev"
