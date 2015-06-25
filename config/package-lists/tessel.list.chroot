@@ -4,3 +4,4 @@ libusb-1.0-0-dev
 libudev-dev
 git
 zenity
+autossh
