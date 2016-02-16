@@ -5,3 +5,4 @@ libudev-dev
 git
 zenity
 autossh
+curl
