@@ -2,8 +2,16 @@
 Debian live-build configuration for test rig netbook
 
 ## Setup
-
-TBD: you need at least [my fork of live-build](https://github.com/kevinmehall/live-build). All deps are installed on the TM build server. Need to try it on a clean machine and document what else needs to be installed...
+First, clone and install our fork of [live-build](https://github.com/kevinmehall/live-build). Live build is a utility that takes a configuration file and generates a live build image. It is installed as the `lb` command:
+```
+git clone https://github.com/kevinmehall/live-build.git;
+cd live-build;
+make install;
+```
+Then, install the dependencies:
+```
+sudo apt-get install debootstrap
+```
 
 # Configuring
 
